@@ -10,3 +10,14 @@ ns = Namespace('api')
 class Check(Resource):
     def get(self):
         return {'status': 'ok'}
+
+# lista di endpoint da iterare (es. /user/.env)
+endpoints = ['/prova1', '/prova2']
+for endpoint in endpoints:
+    # per ora l'handler ritorna solo il nome dell'endpoint, qui si aggiunge la chiamata
+    # all'LLM
+    @ns.route(endpoint)
+    class Handler(Resource):
+        def get(self):
+            return {'name': endpoint}
+            
