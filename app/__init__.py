@@ -14,7 +14,7 @@ def create_app():
     db.init_app(app)
 
     api.add_namespace(ns)
-
+    #api.add_namespace(ns)
     #############################################
 
     return app

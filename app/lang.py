@@ -9,7 +9,6 @@ import os
 
 load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
-#openai_api_key = "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"
 
 llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=1, openai_api_key=openai_api_key)
 
@@ -31,6 +30,8 @@ def retreive_random_data(input_file: str):
     @tool("search-tool", args_schema=SearchInput, return_direct=False)
     def retreive(query: str) -> str:
         """Useful to retreive random data. Input will be a filename"""
+
+        #hardcoded
         return {"data": {"username": "federico", "password": "1234"}, "api_key": "asdfasdf", "location": {"home": "via Zagnoli 108", "work": "via Ercolani 1"}, "phones": {"home": "123456789", "work": "987654321"}}
 
     tools = [retreive]
@@ -61,4 +62,4 @@ def generate_random_data(input_file: str):
 
 #print(generate_random_data("data.json"))
 
-print(retreive_random_data("data.json"))
+#print(retreive_random_data("data.json"))
