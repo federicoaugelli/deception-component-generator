@@ -13,7 +13,7 @@ client = QdrantClient(host="localhost", port=6333)
 
 documents = [
     {   
-        "username": "user2",
+        "username": "user1",
         "password": "123456",
         "api_key": "123456",
         "address": "123456",

@@ -14,9 +14,10 @@ load_dotenv()
 
 ns = Namespace('api')
 
-app.secret_key = os.getenv("APP_SECRET_KEY")
-app.config['SESSION_COOKIE_NAME'] = 'google-login-session'
-app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
+#app.secret_key = os.getenv("APP_SECRET_KEY")
+#app.config['SESSION_COOKIE_NAME'] = 'google-login-session'
+#app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -39,7 +40,7 @@ for endpoint in endpoints:
     # all'LLM
     @ns.route(endpoint)
     class Handler(Resource):
-        #@login_required
+        @login_required
         def get(self):
             return retreive_random_data(endpoint)
 
@@ -62,11 +63,13 @@ class authorize(Resource):
         user = oauth.google.userinfo()  
         session['profile'] = user
         session.permanent = True  
-        return redirect('/check')
+        return redirect('/api/check')
 
-'''
+
 @ns.route('/logout')
-def logout():
-    for key in list(session.keys()):
-        session.pop(key)
-    return redirect('/')'''
+class logout(Resource):
+    @login_required
+    def get(self):
+        for key in list(session.keys()):
+            session.pop(key)
+        return redirect('/api/check')
