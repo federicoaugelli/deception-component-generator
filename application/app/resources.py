@@ -9,14 +9,11 @@ from .lang import *
 from .app import *
 import os
 from dotenv import load_dotenv
+from .qdrant import *
+from .config import AppConfig
 
 load_dotenv()
-
 ns = Namespace('api')
-
-#app.secret_key = os.getenv("APP_SECRET_KEY")
-#app.config['SESSION_COOKIE_NAME'] = 'google-login-session'
-#app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
 
 def login_required(f):
     @wraps(f)
@@ -33,16 +30,15 @@ class Check(Resource):
         return {'status': 'ok'}
 
 
-# lista di endpoint da iterare (es. /user/.env)
-endpoints = ['/prova1', '/prova2', '/user/.env', '/user/data.xml']
-for endpoint in endpoints:
-    # per ora l'handler ritorna solo il nome dell'endpoint, qui si aggiunge la chiamata
-    # all'LLM
+for endpoint in AppConfig.endpoints:
     @ns.route(endpoint)
     class Handler(Resource):
         @login_required
         def get(self):
-            return retreive_random_data(endpoint)
+            data = generate_random_data(endpoint)
+            #result = search_by_vector(endpoint)
+            #upload_documents([{"filename": endpoint, "data": data}])
+            return data
 
 
 @ns.route('/login')
