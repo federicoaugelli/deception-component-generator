@@ -1,0 +1,15 @@
+version: '3'
+services:
+  qdrant:
+    image: qdrant/qdrant
+    restart: on-failure
+    volumes:
+      - ./qdrant_storage:/qdrant/storage:z
+
+  fake_backend:
+    build:
+      context: ./application
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "9090:9090"
