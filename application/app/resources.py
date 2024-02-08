@@ -7,7 +7,7 @@ from flask import abort, redirect, url_for
 from functools import wraps
 from .lang import *
 from .app import *
-import os
+import os, json
 from dotenv import load_dotenv
 from .qdrant import *
 from .config import AppConfig
@@ -35,10 +35,15 @@ for endpoint in AppConfig.endpoints:
     class Handler(Resource):
         @login_required
         def get(self):
-            data = generate_random_data(endpoint)
-            #result = search_by_vector(endpoint)
-            #upload_documents([{"filename": endpoint, "data": data}])
-            return data
+            result = search_by_vector(endpoint)
+            if not result:
+                result = generate_random_data(endpoint)
+                result = json.loads(result)
+                upload_documents([{"filename": endpoint, "data": result}])
+            else:
+                result = retreive_random_data(endpoint, result)
+                result = json.loads(result)
+            return result
 
 
 @ns.route('/login')

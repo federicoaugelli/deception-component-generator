@@ -5,11 +5,15 @@ services:
     restart: on-failure
     volumes:
       - ./qdrant_storage:/qdrant/storage:z
+    ports:
+      - "6333:6333"
 
   fake_backend:
     build:
       context: ./application
       dockerfile: Dockerfile
+    env_file:
+      - .env
     restart: on-failure
     ports:
       - "9090:9090"

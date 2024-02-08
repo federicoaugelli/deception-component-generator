@@ -50,11 +50,12 @@ def generate_random_data(input_file: str):
     chain = prompt | llm
 
     response = chain.invoke({"input": input_file}).to_json()
+    print(response["kwargs"]["content"])
 
     return response["kwargs"]["content"]
 
 
 
-#print(generate_random_data(".env"))
+#print(generate_random_data("api/user/data.env"))
 
 #print(retreive_random_data("users.xml", '{"DATABASE_HOST": "db.example.com","DATABASE_PORT": "5432","DATABASE_NAME": "my_database","DATABASE_USERNAME": "my_username","DATABASE_PASSWORD": "my_password123","SECRET_KEY": "9sk1x8l2t5jr1pq6","SMTP_HOST": "smtp.example.com","SMTP_PORT": "587","SMTP_USERNAME": "my_email@example.com","SMTP_PASSWORD": "my_email_password","AWS_ACCESS_KEY_ID": "my_aws_access_key","AWS_SECRET_ACCESS_KEY": "my_aws_secret_key"}'))

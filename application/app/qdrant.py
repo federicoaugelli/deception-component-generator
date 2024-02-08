@@ -13,26 +13,6 @@ load_dotenv()
 encoder = SentenceTransformer("all-MiniLM-L6-v2")
 client = QdrantClient(host=os.getenv("QDRANT_HOST"), port=os.getenv("QDRANT_PORT"))
 
-sdocuments = [
-    {   
-        "username": "user1",
-        "password": "123456",
-        "api_key": "123456",
-        "address": "123456",
-    },
-    {
-        "username": "user2",
-        "password": "123456",
-        "api_key": "123456",
-        "address": "123456",
-    },
-    {
-        "username": "user3",
-        "password": "123456",
-        "api_key": "123456",
-    },
-]
-
 # Create collection
 try:
     client.create_collection(
@@ -64,8 +44,9 @@ def search_by_vector(vector):
         collection_name="fake_data",
         query_vector=encoder.encode(vector).tolist(),
         limit=1,
+        score_threshold=0.100,
     )
-    for hit in hits:
-        print(hit.payload, "score:", hit.score)
-    return hits
+#    for hit in hits:
+#        print(hit.payload, "score:", hit.score)
+    return hits[0].payload
 
