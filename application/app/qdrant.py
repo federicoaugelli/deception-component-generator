@@ -4,7 +4,7 @@
 #start qdrant server
 #docker pull qdrant/qdrant
 #docker run -p 6333:6333 qdrant/qdrant
-import os
+import os, uuid
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient, models
 from sentence_transformers import SentenceTransformer
@@ -27,16 +27,18 @@ except:
 
 
 # Upload documents
-def upload_documents(documents):
-    client.upload_records(
-        collection_name="fake_data",
-        records=[
-            models.Record(
-                id=idx, vector=encoder.encode(doc["filename"]).tolist(), payload=doc
-            )
-            for idx, doc in enumerate(documents)
-        ],
+def upload_documents(document):
+    client.upsert(
+    collection_name="fake_data",
+    points=[
+        models.PointStruct(
+            id = str(uuid.uuid4()),
+            payload=document,
+            vector=encoder.encode(document["filename"]).tolist(),
+        ),
+    ],
     )
+
 
 # Search
 def search_by_vector(vector):
@@ -44,9 +46,9 @@ def search_by_vector(vector):
         collection_name="fake_data",
         query_vector=encoder.encode(vector).tolist(),
         limit=1,
-        score_threshold=0.100,
+        score_threshold=0.500,
     )
-#    for hit in hits:
-#        print(hit.payload, "score:", hit.score)
-    return hits[0].payload
+    for hit in hits:
+        return hit.payload
+    return None
 

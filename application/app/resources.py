@@ -9,8 +9,8 @@ from .lang import *
 from .app import *
 import os, json
 from dotenv import load_dotenv
-from .qdrant import *
 from .config import AppConfig
+from .start import *
 
 load_dotenv()
 ns = Namespace('api')
@@ -35,14 +35,13 @@ for endpoint in AppConfig.endpoints:
     class Handler(Resource):
         @login_required
         def get(self):
-            result = search_by_vector(endpoint)
-            if not result:
-                result = generate_random_data(endpoint)
-                result = json.loads(result)
-                upload_documents([{"filename": endpoint, "data": result}])
-            else:
-                result = retreive_random_data(endpoint, result)
-                result = json.loads(result)
+            #start()
+            result = generate(endpoint)
+
+            if os.getenv('SYNTAX_ADAPTION') == 'True':
+                data = json.dumps(result)
+                result = retreive_random_data(endpoint, data)
+            #result = json.loads(result)
             return result
 
 
