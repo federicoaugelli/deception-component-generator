@@ -1,7 +1,6 @@
 from flask_restx import Resource, Namespace 
 #from .auth_decorator import login_required
 from .api_models import *
-from .extensions import db 
 #from .models import User
 from flask import abort, redirect, url_for
 from functools import wraps

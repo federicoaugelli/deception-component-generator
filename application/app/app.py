@@ -1,22 +1,16 @@
 from flask import Flask, request, jsonify, redirect, url_for, session
-from sqlalchemy import create_engine, select, insert, update, delete
-from sqlalchemy import MetaData, Table, Column, Integer, String
-from flask_sqlalchemy import SQLAlchemy
 from authlib.integrations.flask_client import OAuth
 import os
 from datetime import timedelta
 #from auth_decorator import login_required
 from dotenv import load_dotenv
+from .start import start
 
 load_dotenv()
 
 
 # App config
 app = Flask(__name__)
-# Session config
-#app.secret_key = os.getenv("APP_SECRET_KEY")
-#app.config['SESSION_COOKIE_NAME'] = 'google-login-session'
-#app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
 
 
 # oAuth Setup
@@ -35,10 +29,10 @@ google = oauth.register(
     server_metadata_url=os.getenv("SERVER_METADATA_URL")
 )
 
+start()
 
-engine = create_engine("sqlite+pysqlite:///:memory:", echo=True)
 
-metadata_obj = MetaData()
+#metadata_obj = MetaData()
 
 app = Flask(__name__)
 

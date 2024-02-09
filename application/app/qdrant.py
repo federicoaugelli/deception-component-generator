@@ -8,7 +8,7 @@ import os, uuid
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient, models
 from sentence_transformers import SentenceTransformer
-
+#https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2
 load_dotenv()
 encoder = SentenceTransformer("all-MiniLM-L6-v2")
 client = QdrantClient(host=os.getenv("QDRANT_HOST"), port=os.getenv("QDRANT_PORT"))
@@ -46,7 +46,7 @@ def search_by_vector(vector):
         collection_name="fake_data",
         query_vector=encoder.encode(vector).tolist(),
         limit=1,
-        score_threshold=0.500,
+        score_threshold=0.250,
     )
     for hit in hits:
         return hit.payload
