@@ -46,7 +46,7 @@ def search_by_vector(vector):
         collection_name="fake_data",
         query_vector=encoder.encode(vector).tolist(),
         limit=1,
-        score_threshold=0.250,
+        score_threshold=0.500,
     )
     for hit in hits:
         return hit.payload

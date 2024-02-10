@@ -23,25 +23,31 @@ def login_required(f):
         return abort(403)
     return decorated_function
 
+
+def create_handler(endpoint):
+    @ns.route(endpoint)
+    class Handler(Resource):
+        @login_required
+        def get(self):
+            result = generate(endpoint)
+            if os.getenv('SYNTAX_ADAPTION') == 'True':
+                data = json.dumps(result)
+                result = retreive_random_data(endpoint, data)
+            #result = json.loads(result)
+            return result
+
+
+
 @ns.route('/check')
 class Check(Resource):
     def get(self):
         return {'status': 'ok'}
 
 
-for endpoint in AppConfig.endpoints:
-    @ns.route(endpoint)
-    class Handler(Resource):
-        @login_required
-        def get(self):
-            #start()
-            result = generate(endpoint)
 
-            if os.getenv('SYNTAX_ADAPTION') == 'True':
-                data = json.dumps(result)
-                result = retreive_random_data(endpoint, data)
-            #result = json.loads(result)
-            return result
+for endpoint in AppConfig.endpoints:
+    create_handler(endpoint)
+
 
 
 @ns.route('/login')

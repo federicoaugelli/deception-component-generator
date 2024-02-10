@@ -9,7 +9,7 @@ import os, json
 
 load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
-llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=1, openai_api_key=openai_api_key)
+llm = ChatOpenAI(model="gpt-4", temperature=1, openai_api_key=openai_api_key)
 
 
 def retreive_random_data(input_file: str, file_content: str):

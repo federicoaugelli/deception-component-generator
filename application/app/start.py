@@ -14,6 +14,8 @@ def generate(endpoint):
         result = generate_random_data(endpoint)
         result = json.loads(result)
         upload_documents({"filename": endpoint, "data": result})
+    else:
+        result = result["data"]
     return result
 
 def start():
