@@ -9,7 +9,6 @@ class AppConfig:
         '/files/.git/config',
         '/alive.php',
         '/showLogin.cc',
-        '/Public/home/js/check.js',
         '/sitemap.xml',
         '/passwords.txt',
         '/user/data.xml',
